@@ -104,7 +104,6 @@ class RegionTableViewController: SwipeTableViewController {
                 newRegion.title = textField.text!
                 //
                 
-                
             } else {
                 print("Invalid Input")
             }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class MealTableViewCell: UITableViewCell {
 

@@ -7,89 +7,145 @@
 //
 
 import UIKit
+import RealmSwift
+import ChameleonFramework
+import os.log
 
 class FoodTableViewController: UITableViewController {
-
+    
+    let realm = try! Realm()
+    
+    var mealArray: Results<Meal>?
+    
+    var selectRestaurant: Restaurant? {
+        didSet {
+            loadMeal()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        tableView.rowHeight = 90.0
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+
+        return mealArray?.count ?? 1
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! MealTableViewCell
+        
+        if let meal = mealArray?[indexPath.row] {
+            cell.nameLabel.text = meal.name
+            cell.ratingControl.rating = meal.rating
+            //cell.photoImageView.image = meal.photo (convert string to UIImage)
+            
+        }
 
         return cell
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    //MARK: - TableView Data Delegate Method
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+            if let mealTobeDeleted = self.mealArray?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                        self.realm.delete(mealTobeDeleted)
+                    }
+                } catch {
+                    print("Error deleting meal \(error)")
+                }
+            }
+            self.tableView.reloadData()
+        }
+        
+        return [delete]
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        
+        switch (segue.identifier ?? "") {
+        case "AddItem":
+            os_log("Adding a new meal.", log: OSLog.default, type: .debug)
+            
+        case "ShowDetail":
+            guard let destinationVC = segue.destination as? FoodDetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let indexPath = tableView.indexPathForSelectedRow else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            if let selectedMeal = mealArray?[indexPath.row] {
+                let name = selectedMeal.name
+                let rating = selectedMeal.rating
+                //let photo = selectedMeal.photo
+                destinationVC.meal = MealDetail(name: name, photo: UIImage(named: "defaultphoto"), rating: rating)
+            }
+
+        default:
+             fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+        }
     }
-    */
+    
+    
+    //MARK: - Action
+    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+        
+        if let sourceVC = sender.source as? FoodDetailViewController {
+            
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                do {
+                    try self.realm.write {
+                        if let sourceMeal = sourceVC.meal {
+                            mealArray![selectedIndexPath.row].name = sourceMeal.name
+                            mealArray![selectedIndexPath.row].rating = sourceMeal.rating
+                            //currentRestaurant.meals[selectedIndexPath.row].photo = sourceMeal.photo
+                        }
+                    }
+                } catch {
+                    print("Error updating newMeal \(error)")
+                }
+
+            } else {
+                if let currentRestaurant = selectRestaurant {
+                    do {
+                        try self.realm.write {
+                            let newMeal = Meal()
+
+                            if let sourceMeal = sourceVC.meal {
+                                newMeal.name = sourceMeal.name
+                                newMeal.rating = sourceMeal.rating
+                                //newMeal.photo = meal?.photo
+                                currentRestaurant.meals.append(newMeal)
+                            }
+                        }
+                    } catch {
+                        print("Error saving newMeal \(error)")
+                    }
+                }
+            }
+        }
+        tableView.reloadData()
+        
+    }
+
+    //MARK: Data Manipulate Method
+    func loadMeal() {
+        mealArray = selectRestaurant?.meals.sorted(byKeyPath: "name", ascending: true)
+    }
+    
+    
 
 }
+
+

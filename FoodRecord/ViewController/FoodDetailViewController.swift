@@ -120,6 +120,7 @@ class FoodDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         }
         
         photoImageView.image = selectedImage
+        
         dismiss(animated: true, completion: nil)
         
     }

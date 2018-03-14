@@ -11,7 +11,6 @@ import RealmSwift
 
 class Region: Object {
     @objc dynamic var title: String = ""
-    @objc dynamic var color: String = ""
     
     let restaurants = List<Restaurant>()
 }

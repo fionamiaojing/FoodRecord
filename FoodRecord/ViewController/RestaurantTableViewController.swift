@@ -24,8 +24,14 @@ class RestaurantTableViewController: SwipeTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        tableView.separatorStyle = .none
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadRestaurant()
+    }
+    
 
     // MARK: - TableView Data Source Method
 
@@ -39,8 +45,15 @@ class RestaurantTableViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
         if let restaurant = restaurantArray?[indexPath.row] {
-            cell.textLabel?.text = restaurant.name
-            //
+            let mealCount = restaurant.meals.count
+            print(mealCount)
+            cell.textLabel?.text = restaurant.name + " (\(mealCount))"
+            
+            if let color = UIColor.flatSand.darken(byPercentage: CGFloat(indexPath.row) / CGFloat((restaurantArray?.count)!)) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
+            
         }
         return cell
     }
@@ -77,8 +90,8 @@ class RestaurantTableViewController: SwipeTableViewController {
     //MARK: Data Manipulate Method
     
     func loadRestaurant() {
-        
         restaurantArray = selectedRegion?.restaurants.sorted(byKeyPath: "name", ascending: true)
+        tableView.reloadData()
         
     }
     
@@ -101,7 +114,6 @@ class RestaurantTableViewController: SwipeTableViewController {
                             newRestaurant.name = textField.text!
                             currentRegion.restaurants.append(newRestaurant)
                             
-                            //
                         } else {
                             print("Invalid Input")
                         }

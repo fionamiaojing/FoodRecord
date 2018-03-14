@@ -15,10 +15,18 @@ class RegionTableViewController: SwipeTableViewController {
     var regionArray: Results<Region>?
     
     let realm = try! Realm()
+    
+    var colorArray : [UIColor] = [UIColor.flatWatermelon, UIColor.flatPowderBlue, UIColor.flatYellow]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
+        loadRegion()
+    }
+    
+    //load view when region View appears
+    override func viewWillAppear(_ animated: Bool) {
         loadRegion()
     }
     
@@ -35,8 +43,12 @@ class RegionTableViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let region = regionArray?[indexPath.row] {
-            cell.textLabel?.text = region.title
-            //
+            let restaurantCount = region.restaurants.count
+            cell.textLabel?.text = region.title + " (\(restaurantCount))"
+            
+            let regionColor = colorArray[indexPath.row % colorArray.count]
+            cell.backgroundColor = regionColor
+            cell.textLabel?.textColor = ContrastColorOf(regionColor, returnFlat: true)
         }
         return cell
     }
@@ -85,7 +97,6 @@ class RegionTableViewController: SwipeTableViewController {
     
     func loadRegion() {
         regionArray = realm.objects(Region.self)
-        
         tableView.reloadData()
     }
     
@@ -102,7 +113,6 @@ class RegionTableViewController: SwipeTableViewController {
             let newRegion = Region()
             if textField.text?.isEmpty != true {
                 newRegion.title = textField.text!
-                //
                 
             } else {
                 print("Invalid Input")

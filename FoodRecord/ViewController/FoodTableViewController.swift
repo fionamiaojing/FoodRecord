@@ -141,7 +141,7 @@ class FoodTableViewController: UITableViewController {
 
     //MARK: Data Manipulate Method
     func loadMeal() {
-        mealArray = selectRestaurant?.meals.sorted(byKeyPath: "name", ascending: true)
+        mealArray = selectRestaurant?.meals.sorted(byKeyPath: "rating", ascending: false)
     }
     
     

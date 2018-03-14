@@ -11,7 +11,6 @@ import RealmSwift
 
 class Restaurant: Object {
     @objc dynamic var name: String = ""
-    @objc dynamic var color: String = ""
     @objc dynamic var score: Int = 0
     
     let meals = List<Meal>()

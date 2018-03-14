@@ -31,7 +31,7 @@ class FoodDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         if let currentMeal = meal {
             navigationItem.title = currentMeal.name
             mealTextField.text = currentMeal.name
-            //photoImageView.image = meal.photo
+            photoImageView.image = currentMeal.photo
             ratingControl.rating = currentMeal.rating
         }
         

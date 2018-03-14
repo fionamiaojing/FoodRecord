@@ -44,7 +44,7 @@ class FoodTableViewController: UITableViewController {
         if let meal = mealArray?[indexPath.row] {
             cell.nameLabel.text = meal.name
             cell.ratingControl.rating = meal.rating
-            //cell.photoImageView.image = meal.photo (convert string to UIImage)
+            cell.photoImageView.image = UIImage(data: meal.photo as! Data, scale: 1)
             
         }
 
@@ -88,8 +88,9 @@ class FoodTableViewController: UITableViewController {
             if let selectedMeal = mealArray?[indexPath.row] {
                 let name = selectedMeal.name
                 let rating = selectedMeal.rating
-                //let photo = selectedMeal.photo
-                destinationVC.meal = MealDetail(name: name, photo: UIImage(named: "defaultphoto"), rating: rating)
+                let photoData = selectedMeal.photo
+                let photo = UIImage(data: photoData as! Data, scale: 1)
+                destinationVC.meal = MealDetail(name: name, photo: photo, rating: rating)
             }
 
         default:
@@ -109,7 +110,9 @@ class FoodTableViewController: UITableViewController {
                         if let sourceMeal = sourceVC.meal {
                             mealArray![selectedIndexPath.row].name = sourceMeal.name
                             mealArray![selectedIndexPath.row].rating = sourceMeal.rating
-                            //currentRestaurant.meals[selectedIndexPath.row].photo = sourceMeal.photo
+                            if sourceMeal.photo != nil {
+                                mealArray![selectedIndexPath.row].photo = NSData(data: UIImagePNGRepresentation(sourceMeal.photo!)!)
+                            }
                         }
                     }
                 } catch {
@@ -125,7 +128,10 @@ class FoodTableViewController: UITableViewController {
                             if let sourceMeal = sourceVC.meal {
                                 newMeal.name = sourceMeal.name
                                 newMeal.rating = sourceMeal.rating
-                                //newMeal.photo = meal?.photo
+                                if sourceMeal.photo != nil {
+                                    newMeal.photo = NSData(data:UIImagePNGRepresentation(sourceMeal.photo!)!)
+                                    print("photo saved")
+                                }
                                 currentRestaurant.meals.append(newMeal)
                             }
                         }

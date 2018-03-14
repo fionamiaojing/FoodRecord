@@ -15,6 +15,8 @@ class FoodTableViewController: UITableViewController {
     
     let realm = try! Realm()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var mealArray: Results<Meal>?
     
     var selectRestaurant: Restaurant? {
@@ -26,10 +28,10 @@ class FoodTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
         tableView.rowHeight = 90.0
         
     }
-
 
     // MARK: - Table view data source
 
@@ -148,10 +150,25 @@ class FoodTableViewController: UITableViewController {
     //MARK: Data Manipulate Method
     func loadMeal() {
         mealArray = selectRestaurant?.meals.sorted(byKeyPath: "rating", ascending: false)
+        tableView.reloadData()
     }
-    
-    
 
 }
 
-
+extension FoodTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        mealArray = mealArray?.filter("name CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "rating", ascending: false)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadMeal()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}

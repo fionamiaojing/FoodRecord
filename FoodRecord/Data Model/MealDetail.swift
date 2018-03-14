@@ -16,7 +16,6 @@ class MealDetail: NSObject {
     var photo: UIImage?
     var rating: Int
     
-    
     //MARK: Initialization
     init?(name: String, photo: UIImage?, rating: Int) {
         // The name must not be empty

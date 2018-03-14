@@ -14,6 +14,9 @@
         <array key="Georgia.ttf">
             <string>Georgia</string>
         </array>
+        <array key="GeorgiaItalic.ttf">
+            <string>Georgia-Italic</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Region-->
@@ -24,9 +27,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="9Me-iS-9eq">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="RkT-aT-eSO" id="j7h-zL-Hjd"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="DNk-gc-V9q" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DNk-gc-V9q" id="PKt-U1-gNJ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -47,6 +58,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="9Me-iS-9eq" id="hhe-Cc-6ej"/>
                         <segue destination="Ogy-34-pD6" kind="show" identifier="RegionToRestaurant" id="95e-pf-h9p"/>
                     </connections>
                 </tableViewController>
@@ -61,6 +73,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v4n-y4-hLR">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.96993559598922729" green="0.54893913976675868" blue="0.36113376027062727" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="RkT-aT-eSO" kind="relationship" relationship="rootViewController" id="Jdu-nV-23x"/>
@@ -78,9 +93,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="lXv-dB-iLy">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="Ogy-34-pD6" id="FCi-Zw-iL2"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="gEP-Qo-qvx" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gEP-Qo-qvx" id="RWe-rK-Pof">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -101,6 +124,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="lXv-dB-iLy" id="eNK-O3-d2V"/>
                         <segue destination="b8c-E5-REE" kind="show" identifier="RestaurantToFood" id="5mc-Zn-ph3"/>
                     </connections>
                 </tableViewController>
@@ -108,7 +132,7 @@
             </objects>
             <point key="canvasLocation" x="1810" y="-9"/>
         </scene>
-        <!--MEAL-->
+        <!--Meal-->
         <scene sceneID="t2s-uD-SeW">
             <objects>
                 <tableViewController id="b8c-E5-REE" customClass="FoodTableViewController" customModule="FoodRecord" customModuleProvider="target" sceneMemberID="viewController">
@@ -116,9 +140,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="EHL-WQ-HYv">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="b8c-E5-REE" id="BCV-4v-Q96"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="90" id="LDo-BX-PqF" customClass="MealTableViewCell" customModule="FoodRecord" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LDo-BX-PqF" id="Ydk-m2-EMJ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
@@ -154,7 +186,7 @@
                             <outlet property="delegate" destination="b8c-E5-REE" id="qo9-2M-7D8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="MEAL" id="T2M-Qr-L76">
+                    <navigationItem key="navigationItem" title="Meal" id="T2M-Qr-L76">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TSa-o3-z3A">
                             <connections>
                                 <action selector="AddButtonPressed:" destination="b8c-E5-REE" id="3ad-Hn-TNr"/>
@@ -162,6 +194,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="EHL-WQ-HYv" id="S3t-tX-rgL"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r76-bM-pPL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -178,21 +213,22 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="J8J-ME-Ayw">
                                 <rect key="frame" x="10" y="84" width="355" height="557"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8vV-dP-Uew">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8vV-dP-Uew">
                                         <rect key="frame" x="0.0" y="0.0" width="355" height="30"/>
-                                        <nil key="textColor"/>
+                                        <color key="backgroundColor" red="1" green="0.88588491250000001" blue="0.86146361469999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCy-LL-kYS">
                                         <rect key="frame" x="0.0" y="40" width="355" height="23"/>
-                                        <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="20"/>
-                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" name="Georgia-Italic" family="Georgia" pointSize="20"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="J3Q-di-ugj">
                                         <rect key="frame" x="0.0" y="73" width="355" height="100"/>
-                                        <color key="backgroundColor" red="0.81667319630000001" green="0.89903428819999998" blue="0.96659272399999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="1" green="0.88588491250000001" blue="0.86146361469999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="mgS-Qz-k8U"/>
                                         </constraints>
@@ -225,7 +261,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="J8J-ME-Ayw" firstAttribute="leading" secondItem="51t-la-5Se" secondAttribute="leading" constant="10" id="6TD-lv-msY"/>
                             <constraint firstItem="J8J-ME-Ayw" firstAttribute="top" secondItem="51t-la-5Se" secondAttribute="top" constant="20" id="LtB-RU-FI0"/>

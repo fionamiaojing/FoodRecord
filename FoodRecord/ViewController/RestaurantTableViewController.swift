@@ -14,6 +14,8 @@ class RestaurantTableViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var restaurantArray: Results<Restaurant>?
     
     var selectedRegion: Region? {
@@ -138,5 +140,21 @@ class RestaurantTableViewController: SwipeTableViewController {
     
 }
 
+extension RestaurantTableViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        restaurantArray = restaurantArray?.filter("name CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "name", ascending: true)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadRestaurant()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
 
 

@@ -14,6 +14,8 @@ class RegionTableViewController: SwipeTableViewController {
     
     var regionArray: Results<Region>?
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let realm = try! Realm()
     
     var colorArray : [UIColor] = [UIColor.flatWatermelon, UIColor.flatPowderBlue, UIColor.flatYellow]
@@ -134,7 +136,25 @@ class RegionTableViewController: SwipeTableViewController {
     
 }
 
-
+extension RegionTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        regionArray = regionArray?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "title", ascending: true)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadRegion()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+    
+    
+}
 
 
 

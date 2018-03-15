@@ -11,7 +11,8 @@ import RealmSwift
 
 class Meal: Object {
     @objc dynamic var name: String = ""
-    @objc dynamic var photo: NSData?
+    @objc dynamic var photoKey: String?
+    @objc dynamic var des: String = ""
     @objc dynamic var rating: Int = 0
     
     var parentRestarurant = LinkingObjects(fromType: Restaurant.self, property: "meals")

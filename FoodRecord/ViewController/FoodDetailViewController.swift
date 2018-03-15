@@ -32,6 +32,7 @@ class FoodDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             navigationItem.title = currentMeal.name
             mealTextField.text = currentMeal.name
             photoImageView.image = currentMeal.photo
+            mealDescriptionText.text = currentMeal.des
             ratingControl.rating = currentMeal.rating
         }
         
@@ -88,9 +89,10 @@ class FoodDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         let name = mealTextField.text ?? ""
         let rating = ratingControl.rating
+        let des = mealDescriptionText.text ?? ""
         let photo = photoImageView.image
         
-        meal = MealDetail(name: name, photo: photo, rating: rating)
+        meal = MealDetail(name: name, des: des, photo: photo, rating: rating)
     }
     
     

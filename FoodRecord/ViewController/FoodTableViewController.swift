@@ -43,10 +43,12 @@ class FoodTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! MealTableViewCell
         
-        if let meal = mealArray?[indexPath.row] {
+        if let meal = mealArray?[indexPath.row], let currentRestaurant = selectRestaurant {
             cell.nameLabel.text = meal.name
             cell.ratingControl.rating = meal.rating
-            cell.photoImageView.image = UIImage(data: meal.photo as! Data, scale: 1)
+            //change 5
+            let photokey = currentRestaurant.name + meal.name
+            cell.photoImageView.image = getImage(key: photokey)
             
         }
 
@@ -87,12 +89,15 @@ class FoodTableViewController: UITableViewController {
             guard let indexPath = tableView.indexPathForSelectedRow else {
                 fatalError("The selected cell is not being displayed by the table")
             }
-            if let selectedMeal = mealArray?[indexPath.row] {
+            if let selectedMeal = mealArray?[indexPath.row], let currentRestaurant = selectRestaurant {
                 let name = selectedMeal.name
                 let rating = selectedMeal.rating
-                let photoData = selectedMeal.photo
-                let photo = UIImage(data: photoData as! Data, scale: 1)
-                destinationVC.meal = MealDetail(name: name, photo: photo, rating: rating)
+                let des = selectedMeal.des
+
+                let photoKey = currentRestaurant.name + selectedMeal.name
+                let photo = getImage(key: photoKey)
+                destinationVC.meal = MealDetail(name: name, des: des, photo: photo, rating: rating)
+                
             }
 
         default:
@@ -112,8 +117,13 @@ class FoodTableViewController: UITableViewController {
                         if let sourceMeal = sourceVC.meal {
                             mealArray![selectedIndexPath.row].name = sourceMeal.name
                             mealArray![selectedIndexPath.row].rating = sourceMeal.rating
-                            if sourceMeal.photo != nil {
-                                mealArray![selectedIndexPath.row].photo = NSData(data: UIImagePNGRepresentation(sourceMeal.photo!)!)
+                            mealArray![selectedIndexPath.row].des = sourceMeal.des
+                            if let photo = sourceMeal.photo, let currentRestaurant = selectRestaurant {
+                                print(photo)
+                                //change 3
+                                let photokey = currentRestaurant.name + sourceMeal.name
+                                saveImage(image: photo, key: photokey)
+                                mealArray![selectedIndexPath.row].photoKey = photokey
                             }
                         }
                     }
@@ -130,9 +140,13 @@ class FoodTableViewController: UITableViewController {
                             if let sourceMeal = sourceVC.meal {
                                 newMeal.name = sourceMeal.name
                                 newMeal.rating = sourceMeal.rating
+                                newMeal.des = sourceMeal.des
                                 if sourceMeal.photo != nil {
-                                    newMeal.photo = NSData(data:UIImagePNGRepresentation(sourceMeal.photo!)!)
+                                    //change 2
+                                    newMeal.photoKey = currentRestaurant.name + newMeal.name
+                                    saveImage(image: sourceMeal.photo!, key: newMeal.photoKey!)
                                     print("photo saved")
+                                    
                                 }
                                 currentRestaurant.meals.append(newMeal)
                             }
@@ -146,7 +160,36 @@ class FoodTableViewController: UITableViewController {
         tableView.reloadData()
         
     }
+    
+    //change 1
+    //MARK: save Image and load Image
+    
+    func getDocumentsDirectory() -> URL {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return path[0]
+    }
+    
+    func saveImage(image: UIImage, key: String) {
+        if let data = UIImagePNGRepresentation(image) {
+            let fileName = getDocumentsDirectory().appendingPathComponent("\(key).png")
+            print(fileName)
+            try? data.write(to: fileName)
+        } else {
+            print("saving error")
+        }
+    }
+    
+    func getImage(key: String) -> UIImage? {
+        let fileManager = FileManager.default
+        let fileName = getDocumentsDirectory().appendingPathComponent("\(key).png")
+        if fileManager.fileExists(atPath: fileName.path) {
+            return UIImage(contentsOfFile: fileName.path)!
+        }
+        return nil
+    }
+    
 
+    
     //MARK: Data Manipulate Method
     func loadMeal() {
         mealArray = selectRestaurant?.meals.sorted(byKeyPath: "rating", ascending: false)
